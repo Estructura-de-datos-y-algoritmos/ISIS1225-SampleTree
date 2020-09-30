@@ -38,8 +38,7 @@ operación seleccionada.
 # ___________________________________________________
 
 
-accidentsFile = 'US_Accidents_Dec19.csv'
-#'prueba.csv'
+crimefile = 'crime-utf8.csv'
 
 # ___________________________________________________
 #  Menu principal
@@ -51,9 +50,9 @@ def printMenu():
     print("*******************************************")
     print("Bienvenido")
     print("1- Inicializar Analizador")
-    print("2- Cargar información de accidentes")
-    print("3- Requerimento 1")
-    print("4- Requerimento 2")
+    print("2- Cargar información de crimenes")
+    print("3- Consultar crimenes en un rango de fechas")
+    print("4- Consultar crimenes por codigo y fecha")
     print("0- Salir")
     print("*******************************************")
 
@@ -63,7 +62,7 @@ Menu principal
 """
 while True:
     printMenu()
-    inputs = input('Seleccione una opción para continuar\n')
+    inputs = input('Seleccione una opción para continuar\n>')
 
     if int(inputs[0]) == 1:
         print("\nInicializando....")
@@ -72,19 +71,28 @@ while True:
 
     elif int(inputs[0]) == 2:
         print("\nCargando información de crimenes ....")
-        controller.loadData(cont, accidentsFile)
-        print("Elementos cargados\n", lt.size(cont["accident"]))
-        altura = controller.altura(cont["date"])
-        datos = controller.indexSize(cont["date"])
-        print("Altura del arbol\n", altura)
-        print("Elmentos cargados\n", datos)
+        controller.loadData(cont, crimefile)
+        print('Crimenes cargados: ' + str(controller.crimesSize(cont)))
+        print('Altura del arbol: ' + str(controller.indexHeight(cont)))
+        print('Elementos en el arbol: ' + str(controller.indexSize(cont)))
+        print('Menor Llave: ' + str(controller.minKey(cont)))
+        print('Mayor Llave: ' + str(controller.maxKey(cont)))
 
     elif int(inputs[0]) == 3:
         print("\nBuscando crimenes en un rango de fechas: ")
-
+        initialDate = input("Rango Inicial (YYYY-MM-DD): ")
+        finalDate = input("Rango Inicial (YYYY-MM-DD): ")
+        lst = controller.getCrimesByRange(cont, initialDate, finalDate)
+        print("\nTotal de llaves en el rango: " + str(lt.size(lst)))
 
     elif int(inputs[0]) == 4:
-        print("\nRequerimiento No 1 del reto 3: ")
+        print("\nBuscando crimenes x grupo de ofensa en una fecha: ")
+        initialDate = input("Fecha (YYYY-MM-DD): ")
+        offensecode = input("Codigo de ofensa: ")
+        numoffenses = controller.getCrimesByRangeCode(cont, initialDate,
+                                                      offensecode)
+        print("\nTotal de ofensas tipo: " + offensecode + " en esa fecha:  " +
+              str(numoffenses))
 
     else:
         sys.exit(0)
