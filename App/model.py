@@ -113,6 +113,16 @@ def altura(arbol):
 
 def indexSize(arbol):
     return om.size(arbol)
+
+
+def accidentesFecha(analyzer, fecha):
+
+    llv = om.get(analyzer["date"], fecha)
+    acci = me.getValue(llv)
+    lis = m.valueSet(acci['severidad'])
+    return lis
+        
+
     
     
 

@@ -62,6 +62,12 @@ def loadData(analyzer, accidentsfile):
         model.addAccident(analyzer, accident)
     return analyzer
 
+
+def accidentesFecha(analyzer, fecha):
+    
+    fecha = datetime.datetime.strptime(fecha, '%Y-%m-%d')
+    return model.accidentesFecha(analyzer, fecha.date())
+
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________

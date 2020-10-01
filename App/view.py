@@ -23,7 +23,9 @@
 import sys
 import config
 from DISClib.ADT import list as lt
+from DISClib.DataStructures import listiterator as it
 from App import controller
+from time import process_time
 assert config
 
 """
@@ -39,7 +41,7 @@ operación seleccionada.
 
 
 accidentsFile = 'US_Accidents_Dec19.csv'
-#'prueba.csv'
+#accidentsFile = 'prueba.csv'
 
 # ___________________________________________________
 #  Menu principal
@@ -72,15 +74,27 @@ while True:
 
     elif int(inputs[0]) == 2:
         print("\nCargando información de crimenes ....")
+        t1 = process_time()
         controller.loadData(cont, accidentsFile)
         print("Elementos cargados\n", lt.size(cont["accident"]))
         altura = controller.altura(cont["date"])
         datos = controller.indexSize(cont["date"])
+        t2 = process_time()
         print("Altura del arbol\n", altura)
         print("Elmentos cargados\n", datos)
+        t = t2-t1
+        print("Tiempo requerido: ", t)
 
     elif int(inputs[0]) == 3:
-        print("\nBuscando crimenes en un rango de fechas: ")
+        print("\nBuscando los accidentes de una fecha: ")
+        
+        fecha = input("Digite la fecha a buscar de la forma AAAA-MM-DD: ")
+        lst = controller.accidentesFecha(cont, fecha)
+        itera = it.newIterator(lst)
+        while it.hasNext(itera):
+            value = it.next(itera)
+            print("Tipo de severidad :", value["severidad"], "Numero de accidentes: ", lt.size(value["lst_id"]))
+        
 
 
     elif int(inputs[0]) == 4:
